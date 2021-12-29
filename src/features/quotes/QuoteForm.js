@@ -1,18 +1,36 @@
 import React, { useState } from "react";
 import { v4 as uuid } from "uuid";
 import { addQuote } from "./quotesSlice";
-
+import { useDispatch } from "react-redux";
 function QuoteForm() {
   const [formData, setFormData] = useState({
+    content: "",
+    author: ""
     // set up a controlled form with internal state
     // look at the form to determine what keys need to go here
   });
-
+  
+  const dispatch = useDispatch()
   function handleChange(event) {
-    // Handle Updating Component State
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
   }
 
   function handleSubmit(event) {
+    event.preventDefault()
+    console.log(formData)
+    const newQuote = {
+      ...formData,
+      id: uuid(),
+      votes: 0
+    }
+    dispatch(addQuote(newQuote))
+    setFormData({
+      content: "",
+      author: ""
+    })
     // Handle Form Submit event default
     // Create quote object from state
     // Pass quote object to action creator
@@ -25,7 +43,7 @@ function QuoteForm() {
         <div className="col-md-8 col-md-offset-2">
           <div className="panel panel-default">
             <div className="panel-body">
-              <form className="form-horizontal">
+              <form onSubmit={handleSubmit} className="form-horizontal">
                 <div className="form-group">
                   <label htmlFor="content" className="col-md-4 control-label">
                     Quote
@@ -35,6 +53,8 @@ function QuoteForm() {
                       className="form-control"
                       id="content"
                       value={formData.content}
+                      onChange={handleChange}
+                      name="content"
                     />
                   </div>
                 </div>
@@ -47,7 +67,9 @@ function QuoteForm() {
                       className="form-control"
                       type="text"
                       id="author"
+                      onChange={handleChange}
                       value={formData.author}
+                      name="author"
                     />
                   </div>
                 </div>

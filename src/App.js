@@ -1,4 +1,6 @@
 import React from "react";
+import QuoteForm from "./features/quotes/QuoteForm.js"
+import Quotes from "./features/quotes/Quotes.js";
 
 function App() {
   return (
@@ -15,7 +17,9 @@ function App() {
 
           Render QuoteForm and Quotes Components
          */}
-    </div>
+         <QuoteForm/>
+         <Quotes/>
+        </div>
   );
 }
 
